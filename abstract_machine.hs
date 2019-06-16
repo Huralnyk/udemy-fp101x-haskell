@@ -1,12 +1,13 @@
-data Expr = Val Int | Add Expr Expr
+data Expr = Val Int | Add Expr Expr | Mult Expr Expr
 
--- value :: Expr -> Int
--- value (Val n)   = n
--- value (Add x y) = value x + value Y
+value :: Expr -> Int
+value (Val n)    = n
+value (Add x y)  = value x + value y
+value (Mult x y) = value x * value y 
 
-type Cont = [Op]
+-- type Cont = [Op]
 
-data Op = EVAL Expr | ADD Int
+-- data Op = EVAL Expr | ADD Int
 
 -- eval :: Expr -> Cont -> Int
 -- eval (Val n) c   = exec c n
@@ -22,15 +23,15 @@ data Op = EVAL Expr | ADD Int
 
 -- Exercises
 
-folde :: (Int -> a) -> (a -> a -> a) -> Expr -> a
-folde f g (Val n) = f n
-folde f g (Add x y) = g (folde f g x) (folde f g y)
+-- folde :: (Int -> a) -> (a -> a -> a) -> Expr -> a
+-- folde f g (Val n) = f n
+-- folde f g (Add x y) = g (folde f g x) (folde f g y)
 
-eval :: Expr -> Int
-eval = folde id (+)
+-- eval :: Expr -> Int
+-- eval = folde id (+)
 
-size :: Expr -> Int
-size = folde (\_ -> 1) (+)
+-- size :: Expr -> Int
+-- size = folde (\_ -> 1) (+)
 
 expr :: Expr
-expr = (Add (Add (Val 2) (Val 3)) (Val 4))
+expr = (Mult (Val 2) (Add (Add (Val 2) (Val 3)) (Val 4)))
